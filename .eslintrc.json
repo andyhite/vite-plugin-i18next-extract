@@ -1,0 +1,92 @@
+{
+  "root": true,
+  "plugins": [
+    "@nx",
+    "sort-keys",
+    "import",
+    "unused-imports",
+    "i18next",
+    "typescript-sort-keys"
+  ],
+  "extends": [
+    "plugin:@nx/typescript",
+    "plugin:import/recommended",
+    "plugin:typescript-sort-keys/recommended",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+    "sort-keys": "off",
+    "sort-keys/sort-keys-fix": [
+      "warn",
+      "asc",
+      {
+        "natural": true
+      }
+    ],
+    "sort-imports": [
+      "error",
+      {
+        "ignoreCase": false,
+        "ignoreDeclarationSort": true,
+        "ignoreMemberSort": false,
+        "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+        "allowSeparatedGroups": true
+      }
+    ],
+    "import/no-unresolved": [
+      "error",
+      {
+        "ignore": ["^virtual:"]
+      }
+    ],
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling"],
+          "index",
+          "object"
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "orderImportKind": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {
+        "project": "apps/*/tsconfig.json"
+      },
+      "node": true
+    },
+    "import/internal-regex": ["^@p6tech/"]
+  }
+}

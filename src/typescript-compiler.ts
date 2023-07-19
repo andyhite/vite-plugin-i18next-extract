@@ -1,6 +1,6 @@
-import { dirname } from "path";
+import { dirname } from 'path';
 
-import * as ts from "typescript";
+import * as ts from 'typescript';
 
 export class TypescriptCompiler {
   private config?: ts.ParsedCommandLine;
@@ -9,7 +9,7 @@ export class TypescriptCompiler {
     const tsconfigPath = ts.findConfigFile(
       path,
       ts.sys.fileExists,
-      "tsconfig.json"
+      'tsconfig.json'
     );
 
     if (tsconfigPath) {

@@ -1,8 +1,8 @@
-import path from "path";
+import path from 'path';
 
-import { Parser } from "i18next-scanner";
+import { Parser } from 'i18next-scanner';
 
-import { TypescriptCompiler } from "./typescript-compiler";
+import { TypescriptCompiler } from './typescript-compiler';
 
 export interface ResourceExtractorOptions {
   allowDynamicKeys?: boolean;
@@ -41,7 +41,7 @@ export interface ResourceExtractorOptions {
   trans?: {
     acorn?: {
       ecmaVersion?: number | string;
-      sourceType?: "module" | "script";
+      sourceType?: 'module' | 'script';
     };
     component?: string;
     defaultsKey?: string;
@@ -63,15 +63,15 @@ export class ResourceExtractor {
     this.parser = new Parser({
       sort: true,
       ...options,
+      func: {
+        list: options.func?.list ?? ['i18next.t', 'i18n.t', 't'],
+        ...options.func,
+      },
       removeUnusedKeys: false,
       resource: {
-        loadPath: "public/locales/{{lng}}/{{ns}}.json",
-        savePath: "public/locales/{{lng}}/{{ns}}.json",
+        loadPath: 'public/locales/{{lng}}/{{ns}}.json',
+        savePath: 'public/locales/{{lng}}/{{ns}}.json',
         ...options.resource,
-      },
-      func: {
-        list: options.func?.list ?? ["i18next.t", "i18n.t", "t"],
-        ...options.func,
       },
     });
   }
@@ -109,7 +109,7 @@ export class ResourceExtractor {
       const namespaces = resources[lng];
 
       Object.keys(namespaces).forEach((ns) => {
-        const text = JSON.stringify(namespaces[ns], null, 2) + "\n";
+        const text = JSON.stringify(namespaces[ns], null, 2) + '\n';
 
         files.push({
           contents: Buffer.from(text),

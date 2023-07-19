@@ -1,19 +1,19 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-import { Plugin } from "vite";
+import { Plugin } from 'vite';
 
 import {
   ResourceExtractor,
   ResourceExtractorOptions,
-} from "./resource-extractor";
-import { TypescriptCompiler } from "./typescript-compiler";
+} from './resource-extractor';
+import { TypescriptCompiler } from './typescript-compiler';
 
 export default function vitePluginI18nExtract(
   options: ResourceExtractorOptions = {}
 ) {
   const plugin: Plugin = {
-    name: "vite:i18n-scanner",
+    name: 'vite:i18n-scanner',
   };
 
   const compiler = new TypescriptCompiler();
@@ -25,7 +25,7 @@ export default function vitePluginI18nExtract(
   };
 
   plugin.transform = function (code, id) {
-    if (id.includes("/node_modules/")) return;
+    if (id.includes('/node_modules/')) return;
 
     extractor.extractBundle(code).forEach((resource) => {
       const dirPath = path.dirname(resource.path);

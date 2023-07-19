@@ -1,0 +1,13 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "eslint.workingDirectories": ["."],
+  "npm.packageManager": "pnpm",
+  "prettier.configPath": ".prettierrc",
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "eslint.validate": ["json"]
+}
