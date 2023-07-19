@@ -2,16 +2,12 @@ import { dirname } from "path";
 
 import * as ts from "typescript";
 
-export interface TypescriptCompilerOptions {
-  rootPath: string;
-}
-
 export class TypescriptCompiler {
   private config?: ts.ParsedCommandLine;
 
-  constructor(options: TypescriptCompilerOptions) {
+  set rootPath(path: string) {
     const tsconfigPath = ts.findConfigFile(
-      options.rootPath,
+      path,
       ts.sys.fileExists,
       "tsconfig.json"
     );

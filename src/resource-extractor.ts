@@ -2,10 +2,7 @@ import path from "path";
 
 import { Parser } from "i18next-scanner";
 
-import {
-  TypescriptCompiler,
-  TypescriptCompilerOptions,
-} from "./typescript-compiler";
+import { TypescriptCompiler } from "./typescript-compiler";
 
 export interface ResourceExtractorOptions {
   allowDynamicKeys?: boolean;
@@ -58,10 +55,10 @@ export interface ResourceExtractorOptions {
 
 export class ResourceExtractor {
   private parser: Parser;
-  private compiler: TypescriptCompiler;
 
   constructor(
-    private options: ResourceExtractorOptions & TypescriptCompilerOptions
+    private compiler: TypescriptCompiler,
+    private options: ResourceExtractorOptions
   ) {
     this.parser = new Parser({
       sort: true,
@@ -77,9 +74,9 @@ export class ResourceExtractor {
         ...options.func,
       },
     });
-
-    this.compiler = new TypescriptCompiler(options);
   }
+
+  rootPath = process.cwd();
 
   transpile(code: string) {
     return this.compiler.transpile(code);
@@ -117,7 +114,7 @@ export class ResourceExtractor {
         files.push({
           contents: Buffer.from(text),
           path: path.join(
-            this.options.rootPath,
+            this.rootPath,
             this.parser.formatResourceSavePath(lng, ns)
           ),
         });

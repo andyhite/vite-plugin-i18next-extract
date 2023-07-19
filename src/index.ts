@@ -6,6 +6,7 @@ import {
   ResourceExtractor,
   ResourceExtractorOptions,
 } from "./resource-extractor";
+import { TypescriptCompiler } from "./typescript-compiler";
 
 export default function vitePluginI18nExtract(
   options: ResourceExtractorOptions = {}
@@ -14,16 +15,16 @@ export default function vitePluginI18nExtract(
     name: "vite:i18n-scanner",
   };
 
-  let rootPath: string;
+  const compiler = new TypescriptCompiler();
+  const extractor = new ResourceExtractor(compiler, options);
 
   plugin.configResolved = function (config) {
-    rootPath = config.root;
+    extractor.rootPath = config.root;
+    compiler.rootPath = config.root;
   };
 
   plugin.transform = function (code, id) {
     if (id.includes("/node_modules/")) return;
-
-    const extractor = new ResourceExtractor({ ...options, rootPath });
 
     extractor.extractBundle(code).forEach((resource) => {
       fs.writeFileSync(resource.path, resource.contents);
