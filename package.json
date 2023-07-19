@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-i18next-extract",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
@@ -15,10 +15,11 @@
   "repository": "andyhite/vite-plugin-i18next-extract",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf dist",
-    "dev": "pnpm bundle --watch",
     "build": "pnpm clean && pnpm bundle",
     "bundle": "tsup-node src/index.ts --sourcemap --dts --format cjs,esm",
+    "changeset": "pnpm changeset",
+    "clean": "rimraf dist",
+    "dev": "pnpm bundle --watch",
     "prepare": "pnpm build",
     "test": "vitest"
   },
@@ -28,6 +29,7 @@
   },
   "devDependencies": {
     "@alloc/fast-rimraf": "^1.0.8",
+    "@changesets/cli": "^2.26.2",
     "@types/node": "^20.4.2",
     "prettier": "^3.0.0",
     "tsup": "^7.1.0",
