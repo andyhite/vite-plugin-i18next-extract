@@ -1,4 +1,5 @@
 import fs from "fs";
+import path from "path";
 
 import { Plugin } from "vite";
 
@@ -27,6 +28,12 @@ export default function vitePluginI18nExtract(
     if (id.includes("/node_modules/")) return;
 
     extractor.extractBundle(code).forEach((resource) => {
+      const dirPath = path.dirname(resource.path);
+
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+
       fs.writeFileSync(resource.path, resource.contents);
     });
 

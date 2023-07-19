@@ -1,5 +1,11 @@
 # vite-plugin-i18next-extract
 
+## 1.0.3
+
+### Patch Changes
+
+- Create directory path for resource file if it doesn't exist
+
 ## 1.0.2
 
 ### Patch Changes
