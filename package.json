@@ -1,0 +1,54 @@
+{
+  "name": "vite-plugin-i18next-extract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.mjs",
+  "module": "dist/index.mjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "author": "andyhite",
+  "repository": "andyhite/vite-plugin-i18next-extract",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rimraf dist",
+    "dev": "pnpm bundle --watch",
+    "build": "pnpm clean && pnpm bundle",
+    "bundle": "tsup-node src/index.ts --sourcemap --dts --format cjs,esm",
+    "prepare": "pnpm build",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "i18next-scanner": "^4.3.0",
+    "typescript": "^5.1.6"
+  },
+  "devDependencies": {
+    "@alloc/fast-rimraf": "^1.0.8",
+    "@types/node": "^20.4.2",
+    "prettier": "^3.0.0",
+    "tsup": "^7.1.0",
+    "vite": "*"
+  },
+  "peerDependencies": {
+    "vite": "*"
+  },
+  "peerDependenciesMeta": {
+    "vite": {
+      "optional": true
+    }
+  },
+  "keywords": [
+    "vite",
+    "i18n",
+    "i18next",
+    "i18next-scanner"
+  ],
+  "files": [
+    "src",
+    "dist"
+  ]
+}
