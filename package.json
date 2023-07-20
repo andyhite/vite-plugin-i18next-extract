@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-i18next-extract",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/index.mjs",
   "module": "dist/index.mjs",
@@ -24,6 +24,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "debug": "^4.3.4",
     "i18next-scanner": "^4.3.0",
     "typescript": "^5.1.6"
   },
@@ -31,7 +32,9 @@
     "@alloc/fast-rimraf": "^1.0.8",
     "@changesets/cli": "^2.26.2",
     "@nx/eslint-plugin": "16.2.1",
+    "@types/debug": "^4.1.8",
     "@types/node": "^20.4.2",
+    "@types/vinyl-fs": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^5.61.0",
     "@typescript-eslint/parser": "^5.61.0",
     "eslint": "~8.15.0",
@@ -48,6 +51,7 @@
     "eslint-plugin-unused-imports": "^2.0.0",
     "prettier": "^2.8.8",
     "tsup": "^7.1.0",
+    "vinyl-fs": "^4.0.0",
     "vite": "*"
   },
   "peerDependencies": {

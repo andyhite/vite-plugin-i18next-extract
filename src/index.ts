@@ -1,43 +1,58 @@
-import fs from 'fs';
 import path from 'path';
 
+import createDebugger from 'debug';
+import vfs from 'vinyl-fs';
 import { Plugin } from 'vite';
 
-import {
-  ResourceExtractor,
-  ResourceExtractorOptions,
-} from './resource-extractor';
-import { TypescriptCompiler } from './typescript-compiler';
+import { Scanner } from './scanner';
+import { ScannerOptions } from './types';
 
-export default function vitePluginI18nExtract(
-  options: ResourceExtractorOptions = {}
-) {
+function isSourceFile(filename: string) {
+  return /\.[tj]sx?$/.test(filename);
+}
+
+const debug = createDebugger('vite:i18n-extract:plugin');
+
+export default function vitePluginI18nExtract(options: ScannerOptions = {}) {
+  debug('Plugin initializing', { options });
+
   const plugin: Plugin = {
-    name: 'vite:i18n-scanner',
+    apply: 'serve',
+    name: 'vite:i18n-extract',
   };
 
-  const compiler = new TypescriptCompiler();
-  const extractor = new ResourceExtractor(compiler, options);
+  plugin.configureServer = function (server) {
+    const rootPath = server.config.root;
+    const scanner = new Scanner(rootPath);
 
-  plugin.configResolved = function (config) {
-    extractor.rootPath = config.root;
-    compiler.rootPath = config.root;
-  };
+    debug('Configure server', { rootPath });
 
-  plugin.transform = function (code, id) {
-    if (id.includes('/node_modules/')) return;
+    server.watcher.on('change', (filename) => {
+      if (isSourceFile(filename)) {
+        debug('File change', { filename });
 
-    extractor.extractBundle(code).forEach((resource) => {
-      const dirPath = path.dirname(resource.path);
+        const files: string[] = [];
 
-      if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath, { recursive: true });
+        Object.entries(server.watcher.getWatched()).forEach(
+          ([dirname, filenames]) => {
+            filenames.forEach((filename) => {
+              if (isSourceFile(filename)) {
+                files.push(path.join(dirname, filename));
+              }
+            });
+          }
+        );
+
+        debug('Scan files', { files });
+
+        vfs
+          .src(files)
+          .pipe(scanner.createStream(options))
+          .pipe(vfs.dest(rootPath));
+
+        debug('Done scanning files');
       }
-
-      fs.writeFileSync(resource.path, resource.contents);
     });
-
-    return { code };
   };
 
   return plugin;

@@ -1,4 +1,4 @@
-declare module "i18next-scanner" {
+declare module 'i18next-scanner' {
   export type ResourceStore = {
     [lng: string]: {
       [ns: string]: {
@@ -7,9 +7,14 @@ declare module "i18next-scanner" {
     };
   };
 
+  export interface TransformOptions {
+    filepath: string;
+  }
+
   export interface ParseFuncFromStringOptions {
     extensions?: string[];
     list?: string[];
+    transformOptions?: TransformOptions;
   }
 
   export type FallbackKeyFn = (ns: string, value: string) => string;
@@ -17,7 +22,7 @@ declare module "i18next-scanner" {
   export interface ParseTransFromStringOptions {
     acorn?: {
       ecmaVersion?: number | string;
-      sourceType?: "module" | "script";
+      sourceType?: 'module' | 'script';
     };
     component?: string;
     defaultsKey?: string;
@@ -26,14 +31,16 @@ declare module "i18next-scanner" {
     i18nKey?: string;
     keepBasicHtmlNodesFor?: string[];
     supportBasicHtmlNodes?: true;
+    transformOptions?: TransformOptions;
   }
 
   export interface ParseAttrFromStringOptions {
     extensions?: string[];
     list?: string[];
+    transformOptions?: TransformOptions;
   }
 
-  export interface ParserOptions {
+  export interface I18nextScannerOptions {
     allowDynamicKeys?: boolean;
     attr?: ParseAttrFromStringOptions;
     contextDefaultValues?: string[];
@@ -80,7 +87,7 @@ declare module "i18next-scanner" {
   ) => void;
 
   export class Parser {
-    constructor(options?: ParserOptions);
+    constructor(options?: I18nextScannerOptions);
 
     parseFuncFromString(
       str: string,
@@ -122,4 +129,18 @@ declare module "i18next-scanner" {
 
     formatResourceSavePath(lng: string, ns: string): string;
   }
+
+  export type CustomTransformFn = (
+    this: { parser: Parser },
+    file: { path: string },
+    encoding: BufferEncoding,
+    done: () => void
+  ) => void;
+  export type CustomFlushFn = (done: () => void) => void;
+
+  export function createStream(
+    options: I18nextScannerOptions,
+    customTransform?: CustomTransformFn,
+    customFlush?: CustomFlushFn
+  ): NodeJS.ReadWriteStream;
 }

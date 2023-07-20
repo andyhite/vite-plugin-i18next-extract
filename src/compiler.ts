@@ -1,13 +1,14 @@
+import fs from 'fs';
 import { dirname } from 'path';
 
-import * as ts from 'typescript';
+import ts from 'typescript';
 
-export class TypescriptCompiler {
+export class Compiler {
   private config?: ts.ParsedCommandLine;
 
-  set rootPath(path: string) {
+  constructor(rootPath: string) {
     const tsconfigPath = ts.findConfigFile(
-      path,
+      rootPath,
       ts.sys.fileExists,
       'tsconfig.json'
     );
@@ -23,7 +24,9 @@ export class TypescriptCompiler {
     }
   }
 
-  transpile(code: string) {
+  transpile(path: string, encoding: BufferEncoding) {
+    const code = fs.readFileSync(path, encoding);
+
     if (this.config) {
       const result = ts.transpileModule(code, {
         compilerOptions: { ...this.config.options, jsx: ts.JsxEmit.Preserve },

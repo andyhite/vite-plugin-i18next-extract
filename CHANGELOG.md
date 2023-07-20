@@ -1,5 +1,11 @@
 # vite-plugin-i18next-extract
 
+## 1.1.0
+
+### Minor Changes
+
+- Switch to i18next-scanner's stream method to fix unnecessary regeneration of resources
+
 ## 1.0.3
 
 ### Patch Changes
