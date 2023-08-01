@@ -1,5 +1,11 @@
 # vite-plugin-i18next-extract
 
+## 1.1.1
+
+### Patch Changes
+
+- fix exported module for main
+
 ## 1.1.0
 
 ### Minor Changes
